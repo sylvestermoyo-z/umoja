@@ -46,4 +46,32 @@ _Offline tip:_ after step 2, you can disconnect and run: "snakemake --use-conda"
 
 ---
 ## Process flow (High Level)
+1.	Inputs & config — Organize paired FASTQs and set DB/tool paths in "workflow/configs/config.yaml"
+2.	Read QC — Run quality checks and trimming ([FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/); [fastp](https://github.com/OpenGene/fastp))
+3.	Contamination check — Detect within-species contamination (ConFindr, needs BLAST). olc-bioinformatics.github.io+1
+4.	Taxonomic ID — Classify reads (Kraken2), using a local MiniKraken2/RefSeq DB. CCB at JHU+3GitHub+3GitHub+3
+5.	Assembly — Assemble with Shovill (using SKESA backend by default) and produce contigs. Anaconda+3GitHub+3bioconda.github.io+3
+6.	Assembly QC — Evaluate contigs with QUAST. quast.sourceforge.net+2quast.sourceforge.net+2
+7.	Typing — Assign sequence type with MLST. GitHub
+8.	AMR calling — Detect AMR genes/point mutations with AMRFinderPlus and/or ResFinder/PointFinder (if you plan to include them). GitHub+4NCBI+4bioconda.github.io+4
+9.	(Optional) Virulence — Run virulence panels (e.g., VFDB) when you’re ready; keep this step disabled for now.
+10.	Reporting — Aggregate results with MultiQC and export a clinician-friendly Excel (pandas/openpyxl) plus TSV/JSON. docs.seqera.io+2docs.seqera.io+2
 
+_Tip:_ keep each step runnable on its own (Snakemake rules), so you can test/debug “bit-by-bit”
+---
+## Inputs / Outputs
+
+_Inputs:_ Paired-end FASTQs; (optional) phenotype/AST CSV. to help flag genotype–phenotype discrepancies (e.g., carbapenemase gene present but Meropenem (MEM) reported S).
+
+_Outputs:_ Per-step artifacts under results/<sample>/… and a consolidated Excel + HTML in results/summary/
+
+---
+## Reproducibility & offline
+- Per-rule conda envs (workflow/envs/…) + local conda cache = internet-free re-runs
+- DB paths set in "workflow/configs/config.yaml"
+- Ship DB manifests in db_manifests/
+
+---
+## Citation
+
+Moyo S.Z. et al. UMOJA: Unified Microbial Omics for Joint AMR Analysis in BSIs. (2025). URL/DOI.
