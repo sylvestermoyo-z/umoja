@@ -48,14 +48,14 @@ _Offline tip:_ after step 2, you can disconnect and run: "snakemake --use-conda"
 ## Process flow (High Level)
 0.  Pre-run checks Core)- Verify tools + DB versions; confirm paths (Kraken2 DB, ConFindr DB, etc.)
 1.	Inputs & config (Core) — Organize paired FASTQs and set DB/tool paths in "workflow/configs/config.yaml"
-2.	Read QC (Core) — Run quality checks and trimming ([FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/); [fastp](https://github.com/OpenGene/fastp))
-3.	Contamination check (Core) — Detect within-species contamination ([ConFindr](https://github.com/OLC-Bioinformatics/ConFindr)). Ths step flags intra/inter-species contamination before assembly. 
-4.	Taxonomic ID (Core) — Classify reads using ([Kraken2](https://ccb.jhu.edu/software/kraken2/index.shtml) and offline local database [MiniKraken2_v2_8GB](https://ccb.jhu.edu/software/kraken2/index.shtml?t=downloads)
-5.	Assembly (Core)— Assemble with Shovill (using SKESA backend by default) and produce contigs. Anaconda+3GitHub+3bioconda.github.io+3
-6.	Assembly QC — Evaluate contigs with QUAST. quast.sourceforge.net+2quast.sourceforge.net+2
-7.	Typing — Assign sequence type with MLST. GitHub
-8.	AMR calling — Detect AMR genes/point mutations with AMRFinderPlus and/or ResFinder/PointFinder (if you plan to include them). GitHub+4NCBI+4bioconda.github.io+4
-9.	(Optional) Virulence — Run virulence panels (e.g., VFDB) when you’re ready; keep this step disabled for now.
+2.	Read QC (Core) — Run quality checks and trimming ([FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) and [fastp](https://github.com/OpenGene/fastp)
+3.	Contamination check (Core) — Detect within-species contamination before assembly with [ConFindr](https://github.com/OLC-Bioinformatics/ConFindr).  
+4.	Taxonomic ID (Core) — Classify reads using [Kraken2](https://ccb.jhu.edu/software/kraken2/index.shtml) and offline local database [MiniKraken2_v2_8GB](https://ccb.jhu.edu/software/kraken2/index.shtml?t=downloads)
+5.  Species Consensus Check (optional addon, recommended) - Use [BactInspector](https://gitlab.com/antunderwood/bactinspector) to confirm species; optionally require concordance with Kraken2 before proceeding to organism-specific modules.
+6.	De novo Assembly (Core)— Assemble with [Shovill](https://github.com/tseemann/shovill) (using [SKESA](https://github.com/ncbi/SKESA) as backend by default) and produce contigs. 
+7.	Assembly QC (Core)— Evaluate contigs with [QUAST](https://quast.sourceforge.net/quast). If QUAST fails for some samples then re-run De novo assembly using [SPAdes](https://ablab.github.io/spades/index.html) to compare, and then redo QUAST.
+8.	Typing and Virulence — Assign sequence type with [MLST](https://github.com/tseemann/mlst) and detect virulence genes using [AMRFinderPlus](https://github.com/ncbi/amr/wiki/Running-AMRFinderPlus) - optionally use [VirulenceFinder](https://bitbucket.org/genomicepidemiology/virulencefinder/src/master/) for in-depth virulence gene detection for specific pathogens such as E. coli, E. faecalis, E. faecium, S aureus and L. monocytogenes.
+9.	AMR profiling — Detect AMR genes/point mutations with [AMRFinderPlus](https://github.com/ncbi/amr/wiki/Running-AMRFinderPlus) (default) and perform optional Targeted cross-check for E. coli/Salmonella with [ResFinder, PlasmidFinder, and PointFinder (using [staramr](https://github.com/phac-nml/staramr)).
 10.	Reporting — Aggregate results with MultiQC and export a clinician-friendly Excel (pandas/openpyxl) plus TSV/JSON. docs.seqera.io+2docs.seqera.io+2
 
 _Tip:_ keep each step runnable on its own (Snakemake rules), so you can test/debug “bit-by-bit”
