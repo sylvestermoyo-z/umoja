@@ -60,9 +60,9 @@ _Offline tip:_ after step 2, you can disconnect and run: "snakemake --use-conda"
 9.	AMR profiling — Detect AMR genes/point mutations (Resistome) with [AMRFinderPlus](https://github.com/ncbi/amr/wiki/Running-AMRFinderPlus) (default) and perform (optional) Targeted cross-check for _E. coli/Salmonella_ with ResFinder, PlasmidFinder, and PointFinder (using [staramr](https://github.com/phac-nml/staramr)). Additionally, known and novel variants in anti-microbial resistance genes, can be predicted from clean reads using the Comprehensive Antibiotic Resistance Database [CARD](https://card.mcmaster.ca/). Note that CARD is also optional due to being computationaly heavy/requiring more resources.
 10.	Species-specific modules - if species are known,
     - Run [Kleborate](https://github.com/klebgenomics/Kleborate) and also consider also running [Kaptive](https://github.com/klebgenomics/Kaptive) for additional vaccine-development focused insights (for _K. pneumoniae_)
-    - Run [SISTR](https://github.com/phac-nml/sistr_cmd) (for _Salmonella enterica_)
-    - Run [ECTyper](https://github.com/phac-nml/ecoli_serotyping) (for _Escherichia coli_)
-    - Run [SeroBA](https://github.com/sanger-pathogens/seroba) (for _Streptococcus pneumoniae_)
+    - Run [SISTR](https://github.com/phac-nml/sistr_cmd) (for _Salmonella enterica_) for accurate serovar prediction from assemblies to support outbreak tracing and surveillance dashboards, and policy
+    - Run [ECTyper](https://github.com/phac-nml/ecoli_serotyping) (for _Escherichia coli_) for O/H serotype, DEC pathotyping (when needed), lineage context alongside AMR.
+    - Run [SeroBA](https://github.com/sanger-pathogens/seroba) (for _Streptococcus pneumoniae_) because Serotype drives vaccine policy and outbreak interpretation.
     - Run both [SCCmec typing](https://github.com/rpetit3/sccmec) (infection-control and therapy decisions) and [spaTyper](https://github.com/HCGB-IGTP/spaTyper) (subtyping and cluster confirmation) - for MRSA
 12.	Reporting (Core)— Aggregate results with MultiQC and export a clinician-friendly Excel (pandas/openpyxl) plus TSV/JSON. 
 
@@ -71,7 +71,7 @@ _Tip:_ keep each step runnable on its own (Snakemake rules), so you can test/deb
 ---
 ## Inputs / Outputs
 
-_Inputs:_ Paired-end FASTQs; (optional) phenotype/AST CSV. to help flag genotype–phenotype discrepancies (e.g., carbapenemase gene present but Meropenem (MEM) reported S).
+_Inputs:_ Paired-end FASTQs; and (optional) phenotype/AST CSV. to help flag genotype–phenotype discrepancies (e.g., carbapenemase gene present but Meropenem (MEM) reported S).
 
 _Outputs:_ Per-step artifacts under results/<sample>/… and a consolidated Excel + HTML in results/summary/
 
