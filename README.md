@@ -46,11 +46,12 @@ _Offline tip:_ after step 2, you can disconnect and run: "snakemake --use-conda"
 
 ---
 ## Process flow (High Level)
-1.	Inputs & config — Organize paired FASTQs and set DB/tool paths in "workflow/configs/config.yaml"
-2.	Read QC — Run quality checks and trimming ([FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/); [fastp](https://github.com/OpenGene/fastp))
-3.	Contamination check — Detect within-species contamination (ConFindr, needs BLAST). olc-bioinformatics.github.io+1
-4.	Taxonomic ID — Classify reads (Kraken2), using a local MiniKraken2/RefSeq DB. CCB at JHU+3GitHub+3GitHub+3
-5.	Assembly — Assemble with Shovill (using SKESA backend by default) and produce contigs. Anaconda+3GitHub+3bioconda.github.io+3
+0.  Pre-run checks Core)- Verify tools + DB versions; confirm paths (Kraken2 DB, ConFindr DB, etc.)
+1.	Inputs & config (Core) — Organize paired FASTQs and set DB/tool paths in "workflow/configs/config.yaml"
+2.	Read QC (Core) — Run quality checks and trimming ([FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/); [fastp](https://github.com/OpenGene/fastp))
+3.	Contamination check (Core) — Detect within-species contamination ([ConFindr](https://github.com/OLC-Bioinformatics/ConFindr)). Ths step flags intra/inter-species contamination before assembly. 
+4.	Taxonomic ID (Core) — Classify reads using ([Kraken2](https://ccb.jhu.edu/software/kraken2/index.shtml) and offline local database [MiniKraken2_v2_8GB](https://ccb.jhu.edu/software/kraken2/index.shtml?t=downloads)
+5.	Assembly (Core)— Assemble with Shovill (using SKESA backend by default) and produce contigs. Anaconda+3GitHub+3bioconda.github.io+3
 6.	Assembly QC — Evaluate contigs with QUAST. quast.sourceforge.net+2quast.sourceforge.net+2
 7.	Typing — Assign sequence type with MLST. GitHub
 8.	AMR calling — Detect AMR genes/point mutations with AMRFinderPlus and/or ResFinder/PointFinder (if you plan to include them). GitHub+4NCBI+4bioconda.github.io+4
@@ -58,6 +59,7 @@ _Offline tip:_ after step 2, you can disconnect and run: "snakemake --use-conda"
 10.	Reporting — Aggregate results with MultiQC and export a clinician-friendly Excel (pandas/openpyxl) plus TSV/JSON. docs.seqera.io+2docs.seqera.io+2
 
 _Tip:_ keep each step runnable on its own (Snakemake rules), so you can test/debug “bit-by-bit”
+
 ---
 ## Inputs / Outputs
 
@@ -74,4 +76,4 @@ _Outputs:_ Per-step artifacts under results/<sample>/… and a consolidated Exce
 ---
 ## Citation
 
-Moyo S.Z. et al. UMOJA: Unified Microbial Omics for Joint AMR Analysis in BSIs. (2025). URL/DOI.
+Moyo S.Z. et al. (2025) UMOJA: Unified Microbial Omics for Joint AMR Analysis in BSIs. Github https://github.com/sylvestermoyo-z/umoja
