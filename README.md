@@ -2,7 +2,9 @@
 **Unified Microbial Omics for Joint AMR Analysis — Bloodstream Infection (BSI) pipeline**
 
 Umoja is a standards-driven, offline-capable Snakemake workflow that harmonizes best-in-class bacterial WGS tools
-to produce reproducible BSI genomics outputs across labs and countries.
+to produce reproducible BSI genomics outputs across labs and countries. 
+
+The design of the pipeline has tried to consider low resource settings where computational resources may be minimal
 
 ## Why UMOJA?
 - **BSI-focused:** routes common BSI pathogens through organism-aware modules.
@@ -54,9 +56,14 @@ _Offline tip:_ after step 2, you can disconnect and run: "snakemake --use-conda"
 5.  Species Consensus Check (optional addon, recommended) - Use [BactInspector](https://gitlab.com/antunderwood/bactinspector) to confirm species; optionally require concordance with Kraken2 before proceeding to organism-specific modules.
 6.	De novo Assembly (Core)— Assemble with [Shovill](https://github.com/tseemann/shovill) (using [SKESA](https://github.com/ncbi/SKESA) as backend by default) and produce contigs. 
 7.	Assembly QC (Core)— Evaluate contigs with [QUAST](https://quast.sourceforge.net/quast). If QUAST fails for some samples then re-run De novo assembly using [SPAdes](https://ablab.github.io/spades/index.html) to compare, and then redo QUAST.
-8.	Typing and Virulence — Assign sequence type with [MLST](https://github.com/tseemann/mlst) and detect virulence genes using [AMRFinderPlus](https://github.com/ncbi/amr/wiki/Running-AMRFinderPlus) - optionally use [VirulenceFinder](https://bitbucket.org/genomicepidemiology/virulencefinder/src/master/) for in-depth virulence gene detection for specific pathogens such as E. coli, E. faecalis, E. faecium, S aureus and L. monocytogenes.
-9.	AMR profiling — Detect AMR genes/point mutations with [AMRFinderPlus](https://github.com/ncbi/amr/wiki/Running-AMRFinderPlus) (default) and perform optional Targeted cross-check for E. coli/Salmonella with ResFinder, PlasmidFinder, and PointFinder (using [staramr](https://github.com/phac-nml/staramr)). Additionally (optionaly) known and novel variants in anti-microbial resistance genes, can be predicted from clean reads using the Comprehensive Antibiotic Resistance Database [CARD](https://card.mcmaster.ca/). Note that CARD is computationaly heavy and requires more resources.
-10.	Species-specific modules - if species are known, run [Kleborate](https://github.com/klebgenomics/Kleborate) (for K. pneumoniae) and also consider also running [Kaptive](https://github.com/klebgenomics/Kaptive) for additional vaccine-development focused insights. Run [SISTR](https://github.com/phac-nml/sistr_cmd) (for Salmonella enterica). Consider running [ECTyper](https://github.com/phac-nml/ecoli_serotyping) (for E. coli).
+8.	Typing and Virulence — Assign sequence type with [MLST](https://github.com/tseemann/mlst) and detect virulence genes (Virulome) using [AMRFinderPlus](https://github.com/ncbi/amr/wiki/Running-AMRFinderPlus) - optionally use [VirulenceFinder](https://bitbucket.org/genomicepidemiology/virulencefinder/src/master/) for in-depth virulence gene detection for specific pathogens such as _E. coli, E. faecalis, E. faecium, S aureus and L. monocytogenes_.
+9.	AMR profiling — Detect AMR genes/point mutations (Resistome) with [AMRFinderPlus](https://github.com/ncbi/amr/wiki/Running-AMRFinderPlus) (default) and perform (optional) Targeted cross-check for _E. coli/Salmonella_ with ResFinder, PlasmidFinder, and PointFinder (using [staramr](https://github.com/phac-nml/staramr)). Additionally, known and novel variants in anti-microbial resistance genes, can be predicted from clean reads using the Comprehensive Antibiotic Resistance Database [CARD](https://card.mcmaster.ca/). Note that CARD is also optional due to being computationaly heavy/requiring more resources.
+10.	Species-specific modules - if species are known,
+    - Run [Kleborate](https://github.com/klebgenomics/Kleborate) and also consider also running [Kaptive](https://github.com/klebgenomics/Kaptive) for additional vaccine-development focused insights (for _K. pneumoniae_)
+    - Run [SISTR](https://github.com/phac-nml/sistr_cmd) (for _Salmonella enterica_)
+    - Run [ECTyper](https://github.com/phac-nml/ecoli_serotyping) (for _Escherichia coli_)
+    - Run [SeroBA](https://github.com/sanger-pathogens/seroba) (for _Streptococcus pneumoniae_)
+    - Run both [SCCmec typing](https://github.com/rpetit3/sccmec) (infection-control and therapy decisions) and [spaTyper](https://github.com/HCGB-IGTP/spaTyper) (subtyping and cluster confirmation) - for MRSA
 12.	Reporting (Core)— Aggregate results with MultiQC and export a clinician-friendly Excel (pandas/openpyxl) plus TSV/JSON. 
 
 _Tip:_ keep each step runnable on its own (Snakemake rules), so you can test/debug “bit-by-bit”
