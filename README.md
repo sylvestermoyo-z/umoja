@@ -1,5 +1,5 @@
 ## UMOJA **(Unified Microbial Omics for Joint AMR Analysis) for Bloodstream Infection (BSIs)**
-Umoja is an  offline-capable Snakemake workflow for bacterial whole genome assembly and typing 
+UMOJA is an  offline-capable Snakemake workflow for bacterial whole genome assembly and typing 
 using Illumina paired-end sequencing data for reproducible BSI genomics outputs. 
 The design of the pipeline has tried to consider low resource settings where computational resources may be minimal
 
