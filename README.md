@@ -60,7 +60,7 @@ _Offline tip:_ after step 2, you can disconnect and run: "snakemake --use-conda"
     - Run [SISTR](https://github.com/phac-nml/sistr_cmd) (for _Salmonella enterica_) for accurate serovar prediction from assemblies to support outbreak tracing and surveillance dashboards, and policy
     - Run [ECTyper](https://github.com/phac-nml/ecoli_serotyping) (for _Escherichia coli_) for O/H serotype, DEC pathotyping (when needed), lineage context alongside AMR.
     - Run [SeroBA](https://github.com/sanger-pathogens/seroba) (for _Streptococcus pneumoniae_) because Serotype drives vaccine policy and outbreak interpretation.
-    - Run both [SCCmec typing](https://github.com/rpetit3/sccmec) (infection-control and therapy decisions) and [spaTyper](https://github.com/HCGB-IGTP/spaTyper) (subtyping and cluster confirmation) - for MRSA
+    - Run both [SCCmec typing](https://github.com/rpetit3/sccmec) and [spaTyper](https://github.com/HCGB-IGTP/spaTyper) (subtyping and cluster confirmation) - for MRSA
 12.	Reporting (Core)— Aggregate results with MultiQC and export a clinician-friendly Excel (pandas/openpyxl) plus TSV/JSON. 
 
 _Tip:_ keep each step runnable on its own (Snakemake rules), so you can test/debug “bit-by-bit”
